@@ -1,0 +1,20 @@
+[Unit]
+Before=systemd-user-sessions.service
+
+[Service]
+Environment=LOG_LEVEL=warning
+Environment=RTSP_TRANSPORT=tcp
+Environment=USERNAME=admin
+Environment=PORT=554
+Environment=URI=/Streaming/Channels/1?tcp
+Environment=SEGMENT_SECONDS=900
+
+EnvironmentFile=/etc/fcctv/%i.conf
+ExecStart=/usr/local/bin/fcctv.sh
+ExecReload=/bin/kill -HUP $MAINPID
+WorkingDirectory=/data/fcctv/videos/%i/
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
